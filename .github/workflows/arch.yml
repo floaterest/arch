@@ -1,0 +1,41 @@
+name: Build AUR Packages
+
+on:
+  push:
+    branches:
+      - main
+  # pull_request:
+  #   branches:
+  #     - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - run: pacman -Syu --noconfirm git base-devel sudo
+
+      - name: Create a non-root user
+        run: |
+          useradd -m u
+          echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
+          chown -R u:u .
+
+      - run: sudo -u u bash -c "./make.sh fcitx5-mozc-ut zoom vscodium-bin"
+
+      - run: find -name '*.pkg.tar.zst'
+      - run: echo 'Run `sudo pacman -U *.zst` to install.' >> $GITHUB_STEP_SUMMARY
+
+
+      - run: |
+          mkdir -p packages
+          mv */*.pkg.tar.zst packages
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: packages
