@@ -84,7 +84,7 @@ function misc(){
     systemctl --user daemon-reload
     systemctl --user enable opentabletdriver --now
     
-    paru -Syu vscodium-bin stylua typstyle-bin rust-analyzer
+    paru -Syu vscodium-bin stylua typstyle-bin rust-analyzer rustup discord tinymist rsync
     mkdir -p ~/.ssh
 }
 

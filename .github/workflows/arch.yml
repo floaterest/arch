@@ -1,10 +1,7 @@
 name: Build AUR Packages
 
 on:
-  push:
-    branches:
-      - main
-  # pull_request:
+  # push:
   #   branches:
   #     - main
   workflow_dispatch:
@@ -24,7 +21,7 @@ jobs:
           echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
           chown -R u:u .
 
-      - run: sudo -u u bash -c "./make.sh fcitx5-mozc-ut zoom vscodium-bin"
+      - run: sudo -u u bash -c "./make.sh fcitx5-mozc-ut zoom vscodium-bin opentabletdriver"
 
       - run: find -name '*.pkg.tar.zst'
       - run: echo 'Run `sudo pacman -U *.zst` to install.' >> $GITHUB_STEP_SUMMARY

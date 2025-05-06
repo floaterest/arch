@@ -2,19 +2,20 @@
 
 ## Backup
 
-- [~/.config/*](git@github.com:floaterest/dot.git)
-- ~/.config/nvim
-- ~/.local/share/fonts/
-- ~/.mozilla/firefox/
-- ~/.ssh/
-- ~/.thunderbird/
+- floaterest/dot
+- ~/
+  - .config/nvim
+  - .local/share/fonts/
+  - .mozilla/firefox/
+  - .ssh/
+  - .thunderbird/
+  - Documents/
+  - Downloads/
+  - Pictures/
+  - Videos/
+  - Music/
+  - Templates/
 - /opt/vscodium-bin/data/
-- ~/Documents/
-- ~/Downloads/
-- ~/Pictures/
-- ~/Videos/
-- ~/Music/
-- ~/Templates
 
 ## Preinstallation
 
@@ -35,6 +36,7 @@ Boot from USB
   station wlan0 scan
   station wlan0 get-networks
   station wlan0 connect {name}
+  exit
   ```
   - if device is off, do `rfkill unblock wifi` [🔗](https://www.reddit.com/r/archlinux/comments/n4yycf/comment/gwybm5j/)
   - if iwctl says connected, but ping fails, do `dhcpcd wlan0` [🔗](https://www.reddit.com/r/archlinux/comments/hr3ci7/connected_with_iwctl_but_no_internet/)
@@ -69,13 +71,21 @@ for NTFS devices, in `/mnt/etc/fstab` append `,noatime` at the 4th column [🔗]
 
 change root with `arch-chroot /mnt`
 
-run **chroot**
-
 - if dual boot
   - run `pacman -S os-prober`
   - in `/etc/default/grub`, uncomment `GRUB_DISABLE_OS_PROBER=false` (last line)
 
+
+run **localgen + grub install**
+
 run **pacman**
+
+install grub theme
+```bash
+git clone https://github.com/vinceliuice/grub2-themes.git
+cd grub2-themes
+sudo ./install.sh -t stylish
+```
 
 `exit` from arch-chroot, then `reboot`
 
@@ -109,12 +119,13 @@ run **pacman**
     - if screen blurry, use wayland
 - copy `data` to `/opt/vscodium-bin/data`
 - open `nvim` to install packages
-- [opentabletdriver](https://aur.archlinux.org/packages/opentabletdriver)
+- [OpenTabletDriver](https://aur.archlinux.org/packages/opentabletdriver)
     <!-- - if wacom, copy `(/)etc/X11/xorg.conf.d/00-wacom.conf`
     - if wacom and x11, install `xf86-input-wacom`
     - ensure `wacom` module is loaded in `lsmod`
         - if not, remove `/usr/lib/modprobe.d/99-opentabletdriver.conf` -->
     - import settings
+    - if nonwacom table is not detected and `hid_uclogic` is in `lsmod`, add `blacklist hid_uclogic` to `/usr/lib/modprobe.d/blacklist.conf`
 - install japanese, go to [Github Actions](https://github.com/liuyulo/arch/actions/workflows/arch.yml) and download+install `mozc-ut fcitx5-mozc-ut`
 <!-- - install japanese
     - install `fcitx5-im`, choose all
@@ -133,9 +144,21 @@ ftp://liuyulo3@individual.utoronto.ca
 ## Troubleshooting
 ### OpenTabletDriver
 **Not wacom, cannot detect tablet**
-- `sudo rmmod hid_uclogic`
+```bash
+sudo rmmod hid_uclogic
+```
+
 ### Cannot Play Video [🔗](https://bbs.archlinux.org/viewtopic.php?id=273202)
 
 ```bash
 systemctl --user mask wireplumber --now
 ```
+
+## Keyboard Layout Resets after Login [🔗](https://bbs.archlinux.org/viewtopic.php?pid=2088382#p2088382)
+
+Fcitx5's fault. Solution: set `kxkbrc` to immutable
+
+```bash
+sudo chattr +i ~/.config/kxkbrc
+```
+
