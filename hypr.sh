@@ -59,11 +59,11 @@ function hypr(){
         # login
         greetd greetd-regreet
         # GUI
-        breeze breeze-gtk qt6ct
+        breeze breeze-gtk qt6ct-kde
 	    noto-fonts noto-fonts-cjk noto-fonts-emoji ttf-roboto
-        qt5-wayland qt6-wayland
+        qt6-wayland
         # essentials
-        dunst wofi xdg-desktop-portal-hyprland
+        swaync wofi xdg-desktop-portal-hyprland
         # eww dependencies
         
         # kde applications
