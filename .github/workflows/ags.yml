@@ -24,12 +24,12 @@ jobs:
       - run: |
           git clone --branch v3 --recurse-submodules https://github.com/Aylur/ags.git
           cd ags
-          meson setup --prefix ~/.local build # or `--prefix /usr` for system wide install
+          meson setup --prefix $HOME/.local build # or `--prefix /usr` for system wide install
           meson install -C build
       
       - name: Upload 
         uses: actions/upload-artifact@v4
         with:
           name: share
-          path: ~/.local
+          path: ${{ env.HOME }}/.local/share
 
