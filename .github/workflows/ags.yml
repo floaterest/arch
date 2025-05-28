@@ -26,4 +26,6 @@ jobs:
           cd ags
           meson setup --prefix $HOME/.local build # or `--prefix /usr` for system wide install
           meson install -C build
+      - run: |
+          ls $HOME/.local
 
