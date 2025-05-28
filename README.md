@@ -11,10 +11,10 @@
   - .thunderbird/
   - Documents/
   - Downloads/
-  - Pictures/
-  - Videos/
   - Music/
+  - Pictures/
   - Templates/
+  - Videos/
 - /opt/vscodium-bin/data/
 
 ## Preinstallation
@@ -126,6 +126,7 @@ sudo ./install.sh -t stylish
         - if not, remove `/usr/lib/modprobe.d/99-opentabletdriver.conf` -->
     - import settings
     - if nonwacom table is not detected and `hid_uclogic` is in `lsmod`, add `blacklist hid_uclogic` to `/usr/lib/modprobe.d/blacklist.conf`
+    and run `sudo mkinitcpio -P`
 - install japanese, go to [Github Actions](https://github.com/liuyulo/arch/actions/workflows/arch.yml) and download+install `mozc-ut fcitx5-mozc-ut`
 <!-- - install japanese
     - install `fcitx5-im`, choose all
