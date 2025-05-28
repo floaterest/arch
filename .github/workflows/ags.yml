@@ -22,7 +22,7 @@ jobs:
       #     chown -R u:u .
 
       - run: |
-          git clone --branch v3 --recursive-submodules https://github.com/Aylur/ags.git
+          git clone --branch v3 --recurse-submodules https://github.com/Aylur/ags.git
           cd ags
           meson setup --prefix $HOME/.local build # or `--prefix /usr` for system wide install
           meson install -C build
