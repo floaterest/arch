@@ -15,14 +15,13 @@ jobs:
         uses: actions/checkout@v3
       - run: pacman -Syu --noconfirm git base-devel sudo meson
 
-      - name: Create a non-root user
-        run: |
-          useradd -m u
-          echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
-          chown -R u:u .
+      # - name: Create a non-root user
+      #   run: |
+      #     useradd -m u
+      #     echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
+      #     chown -R u:u .
 
       - run: |
-          sudo -u u
           git clone --branch v3 --recursive-submodules https://github.com/Aylur/ags.git
           cd ags
           meson setup --prefix $HOME/.local build # or `--prefix /usr` for system wide install
