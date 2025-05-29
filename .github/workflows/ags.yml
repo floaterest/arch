@@ -26,7 +26,7 @@ jobs:
           makepkg -D yay -si --noconfirm
           "
       - run: ls yay
-      - run: sudo -u u bash -c 'yay -Sa aylurs-gtk-shell <<< A '
+      - run: sudo -u u bash -c 'yes | yay --noprovides --answerdiff None --answerclean None --mflags "--noconfirm" aylurs-gtk-shell'
 
       - run: |
           git clone --branch v3 --recurse-submodules https://github.com/Aylur/ags.git
