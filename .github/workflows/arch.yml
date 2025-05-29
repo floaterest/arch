@@ -21,7 +21,7 @@ jobs:
           echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
           chown -R u:u .
 
-      - run: sudo -u u bash -c "./make.sh fcitx5-mozc-ut zoom vscodium-bin opentabletdriver"
+      - run: sudo -u u bash -c "./makepkg.sh fcitx5-mozc-ut zoom opentabletdriver"
 
       - run: find -name '*.pkg.tar.zst'
       - run: echo 'Run `sudo pacman -U *.zst` to install.' >> $GITHUB_STEP_SUMMARY

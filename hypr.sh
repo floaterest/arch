@@ -84,7 +84,7 @@ function hypr(){
         neovide neovim
         obs-studio openssh
         ripgrep rsync
-        sccache starship
+        sccache starship sshfs
         unrar unzip
         wl-clipboard
         zsh-autosuggestions zsh-completions zsh-syntax-highlighting
