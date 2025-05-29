@@ -22,9 +22,10 @@ jobs:
           chown -R u:u .
 
       - run: |
+          sudo -u u bash -c '
           git clone https://aur.archlinux.org/yay.git
-          sudo -u u makepkg -D yay -si
-
+          makepkg -D yay -si
+          '
       - run: sudo -u u bash -c "yay -S aylurs-gtk-shell"
 
       - run: |
