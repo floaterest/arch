@@ -22,19 +22,17 @@ jobs:
           chown -R u:u .
 
       - run: |
-          su u
           git clone https://aur.archlinux.org/yay.git
-          makepkg -D yay -si
+          sudo -u u "makepkg -D yay -si"
 
       - run: sudo -u u bash -c "yay -S aylurs-gtk-shell"
 
       - run: |
-          su u
           git clone --branch v3 --recurse-submodules https://github.com/Aylur/ags.git
           cd ags
-          meson setup --prefix ~/.local build
+          meson setup --prefix /.local build
           meson install -C build
-          ls ~/.local
+          ls /.local
       
       # - name: Upload 
       #   uses: actions/upload-artifact@v4
