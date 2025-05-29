@@ -21,10 +21,11 @@ jobs:
           echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
           chown -R u:u .
 
-      - run: sudo -u u bash -c '
+      - run: |
+          sudo -u u bash -c "
           git clone https://aur.archlinux.org/yay.git
           makepkg -D yay -si --noconfirm
-          '
+          ""
       - run: sudo -u u bash -c "yay -S aylurs-gtk-shell"
 
       - run: |
