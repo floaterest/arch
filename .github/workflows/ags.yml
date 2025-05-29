@@ -1,4 +1,4 @@
-name: Build AUR Packages
+name: Build AGS Packages
 
 on:
   push:
@@ -20,7 +20,14 @@ jobs:
           useradd -m u
           echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
           chown -R u:u .
-      - run: sudo -u u bash -c "./makepkg.sh aylurs-gtk-shell"
+
+      - run: |
+          su u
+          git clone https://aur.archlinux.org/yay.git
+          makepkg -D yay -si
+
+      - run: sudo -u u bash -c "yay -S aylurs-gtk-shell"
+
       - run: |
           su u
           git clone --branch v3 --recurse-submodules https://github.com/Aylur/ags.git
