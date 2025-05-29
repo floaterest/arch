@@ -25,15 +25,15 @@ jobs:
           git clone https://aur.archlinux.org/yay.git;
           makepkg -D yay -si --noconfirm
           "
-      - run: ls yay
+
       - run: sudo -u u bash -c 'yes | yay --answerdiff None --answerclean None --mflags "--noconfirm" aylurs-gtk-shell'
 
       - run: |
           git clone --branch v3 --recurse-submodules https://github.com/Aylur/ags.git
           cd ags
-          sudo -u u "meson setup --prefix ~/.local build"
+          meson setup --prefix ~/.local build
           meson install -C build
-          ls /
+          ls .
       
       # - name: Upload 
       #   uses: actions/upload-artifact@v4
