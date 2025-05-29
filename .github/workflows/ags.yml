@@ -25,7 +25,8 @@ jobs:
           git clone https://aur.archlinux.org/yay.git;
           makepkg -D yay -si --noconfirm
           "
-      - run: sudo -u u bash -c "yay -S aylurs-gtk-shell"
+      - run: ls yay
+      - run: sudo -u u bash -c 'yay -Sa aylurs-gtk-shell <<< A '
 
       - run: |
           git clone --branch v3 --recurse-submodules https://github.com/Aylur/ags.git
