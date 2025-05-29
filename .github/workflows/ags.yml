@@ -24,7 +24,7 @@ jobs:
       - run: sudo -u u bash -c "
           git clone https://aur.archlinux.org/yay.git;
           makepkg -D yay -si --noconfirm
-          ""
+          "
       - run: sudo -u u bash -c "yay -S aylurs-gtk-shell"
 
       - run: |
