@@ -1,4 +1,4 @@
-name: Build AGS Packages
+name: Build Astal+Ags Packages
 
 on:
   push:
@@ -13,32 +13,36 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - run: pacman -Syu --noconfirm git base-devel sudo meson
+      # https://aylur.github.io/astal/guide/getting-started/installation#building-from-source
+      - name: Install dependencies
+        run: pacman -Syu --noconfirm git base-devel sudo meson vala valadoc gtk3 gtk-layer-shell gobject-introspection
 
-      - name: Create a non-root user
+      # - name: Create a non-root user
+      #   run: |
+      #     useradd -m u
+      #     echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
+      #     chown -R u:u .
+
+      - name: Install Astal
         run: |
-          useradd -m u
-          echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
-          chown -R u:u .
-
-      - run: sudo -u u bash -c "
-          git clone https://aur.archlinux.org/yay.git;
-          makepkg -D yay -si --noconfirm
-          "
-
-      - run: sudo -u u bash -c 'yes | yay --answerdiff None --answerclean None --mflags "--noconfirm" -S aylurs-gtk-shell'
-
-      - run: |
-          git clone --branch v3 --recurse-submodules https://github.com/Aylur/ags.git
-          cd ags
-          meson setup --prefix /ags build
+          git clone https://github.com/aylur/astal.git 
+          cd $GITHUB_WORKSPACE/astal/lib/astal/gtk3
+          meson setup --prefix $GITHUB_WORKSPACE/build build
           meson install -C build
+
       - run: |
-          ls 
+          ls build
+      # - run: |
+      #     git clone --branch v3 --recurse-submodules https://github.com/Aylur/ags.git
+      #     cd ags
+      #     meson setup --prefix /ags build
+      #     meson install -C build
+      # - run: |
+      #     ls 
       
-      - name: Upload 
-        uses: actions/upload-artifact@v4
-        with:
-          name: ags
-          path: /ags
+      # - name: Upload 
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: ags
+      #     path: /ags
 
