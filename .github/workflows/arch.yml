@@ -26,7 +26,6 @@ jobs:
       - run: find -name '*.pkg.tar.zst'
       - run: echo 'Run `sudo pacman -U *.zst` to install.' >> $GITHUB_STEP_SUMMARY
 
-
       - run: |
           mkdir -p packages
           mv */*.pkg.tar.zst packages

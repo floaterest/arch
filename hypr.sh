@@ -92,14 +92,10 @@ function hypr(){
 }
 
 function paru-bin(){
-    # eww authors
-    curl -sS https://github.com/elkowar.gpg | gpg --import -i -
-    curl -sS https://github.com/web-flow.gpg | gpg --import -i -
-
     git clone https://aur.archlinux.org/paru-bin.git /tmp/paru-bin
     cd /tmp/paru-bin && makepkg -sir
 
-    paru -S eww rustup jq socat libnotify hyprshot \
+    paru -S rustup jq libnotify hyprshot \
         discord code \
         typst shfmt stylua typstyle-bin rust-analyzer tinymist
 }

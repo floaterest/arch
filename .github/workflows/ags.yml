@@ -1,4 +1,4 @@
-name: Build AUR Packages
+name: Build AGS Packages
 
 on:
   push:
@@ -13,23 +13,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - run: pacman -Syu --noconfirm git base-devel sudo meson
+      - run: pacman -Syu --noconfirm git base-devel sudo
 
-      # - name: Create a non-root user
-      #   run: |
-      #     useradd -m u
-      #     echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
-      #     chown -R u:u .
+      - name: Create a non-root user
+        run: |
+          useradd -m u
+          echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
+          chown -R u:u .
 
-      - run: |
-          git clone --branch v3 --recurse-submodules https://github.com/Aylur/ags.git
-          cd ags
-          meson setup --prefix /.local build # or `--prefix /usr` for system wide install
-          meson install -C build
-      
-      - name: Upload 
-        uses: actions/upload-artifact@v4
-        with:
-          name: share
-          path: ${{ env.HOME }}/.local/share
+      - run: sudo -u u bash -c "makepkg -D ags -si --noconfirm"
 
+      - run: find -name '*.pkg.tar.zst'

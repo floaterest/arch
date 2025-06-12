@@ -1,0 +1,45 @@
+pkgname=aylurs-gtk-shell-v3-git
+_pkgname=ags
+pkgver=r676.bb06b97
+pkgrel=1
+pkgdesc="Aylurs's Gtk Shell (AGS), An eww inspired gtk widget system."
+arch=('x86_64')
+url="https://github.com/Aylur/ags"
+license=('GPL-3.0-only')
+makedepends=('git' 'ninja' 'go')
+depends=(
+        "gtk4"
+        "gtk4-layer-shell"
+)
+source=(
+        "git+${url}.git#branch=v3"
+        "git+https://github.com/Aylur/gjsx.git"
+)
+sha256sums=('SKIP' 'SKIP')
+provides=('aylurs-gtk-shell')
+conflicts=('aylurs-gtk-shell')
+
+pkgver(){
+        cd $srcdir/$_pkgname
+        printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+}
+
+prepare() {
+        cd $srcdir/$_pkgname
+        git submodule init
+        git config submodule.libs/gjsx.rul "$srcdir/gjsx"
+        git -c protocol.file.allow=always submodule update
+}
+
+build() {
+        arch-meson $srcdir/$_pkgname build
+        meson compile -C build
+}
+
+check() {
+        meson test -C build
+}
+
+package() {
+        meson install -C build --destdir "$pkgdir"
+}
