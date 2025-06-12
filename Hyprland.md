@@ -98,3 +98,4 @@ run `su u` to switch to user
     - import settings
     - if nonwacom table is not detected and `hid_uclogic` is in `lsmod`, add `blacklist hid_uclogic` to `/usr/lib/modprobe.d/blacklist.conf`
 
+Install AGS 

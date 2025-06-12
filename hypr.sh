@@ -51,7 +51,7 @@ function hypr(){
     packages=(
         # Hyprland
         hyprland hyprlock uwsm 
-        hyprpolkitagent
+        hyprpolkitagent hyprpicker
         # sound
         sof-firmware pipewire-jack pipewire-pulse pipewire-alsa qt6-multimedia-ffmpeg phonon-qt6-mpv
         # network
@@ -64,8 +64,6 @@ function hypr(){
         qt6-wayland
         # essentials
         swaync wofi xdg-desktop-portal-hyprland
-        # eww dependencies
-        
         # kde applications
         ark bluedevil dolphin dolphin-plugins 
         ffmpegthumbs filelight francis 
@@ -101,7 +99,7 @@ function paru-bin(){
     git clone https://aur.archlinux.org/paru-bin.git /tmp/paru-bin
     cd /tmp/paru-bin && makepkg -sir
 
-    paru -S eww rustup jq socat libnotify \
+    paru -S eww rustup jq socat libnotify hyprshot \
         discord code \
         typst shfmt stylua typstyle-bin rust-analyzer tinymist
 }

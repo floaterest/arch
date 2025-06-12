@@ -1,4 +1,4 @@
-name: Build Astal+Ags Packages
+name: Build AUR Packages
 
 on:
   push:
@@ -13,9 +13,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      # https://aylur.github.io/astal/guide/getting-started/installation#building-from-source
-      - name: Install dependencies
-        run: pacman -Syu --noconfirm git base-devel sudo meson vala valadoc gtk3 gtk-layer-shell gobject-introspection
+      - run: pacman -Syu --noconfirm git base-devel sudo meson
 
       # - name: Create a non-root user
       #   run: |
@@ -23,26 +21,15 @@ jobs:
       #     echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
       #     chown -R u:u .
 
-      - name: Install Astal
-        run: |
-          git clone https://github.com/aylur/astal.git 
-          cd $GITHUB_WORKSPACE/astal/lib/astal/gtk3
-          meson setup --prefix $GITHUB_WORKSPACE/build build
-          meson install -C build
-
       - run: |
-          ls build
-      # - run: |
-      #     git clone --branch v3 --recurse-submodules https://github.com/Aylur/ags.git
-      #     cd ags
-      #     meson setup --prefix /ags build
-      #     meson install -C build
-      # - run: |
-      #     ls 
+          git clone --branch v3 --recurse-submodules https://github.com/Aylur/ags.git
+          cd ags
+          meson setup --prefix /.local build # or `--prefix /usr` for system wide install
+          meson install -C build
       
-      # - name: Upload 
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: ags
-      #     path: /ags
+      - name: Upload 
+        uses: actions/upload-artifact@v4
+        with:
+          name: share
+          path: ${{ env.HOME }}/.local/share
 
