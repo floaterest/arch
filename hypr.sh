@@ -91,16 +91,16 @@ function hypr(){
 }
 
 function paru-bin(){
-    git clone https://aur.archlinux.org/paru-bin.git /tmp/paru-bin
-    makepkg -D /tmp/paru-bin -sir
-    paru -S qt6ct-kde
 }
 
 function postinstall(){
+    # git clone https://aur.archlinux.org/paru-bin.git /tmp/paru-bin
+    # makepkg -D /tmp/paru-bin -sir
+
     # timedatectl list-timezones
     timedatectl set-timezone 'America/Toronto'
 
-    paru -Sa opentabletdriver
+    # (install .zst)
     systemctl --user daemon-reload
     systemctl --user enable opentabletdriver
 }
