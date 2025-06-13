@@ -6,6 +6,31 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  PACKAGES: |
+    aylurs-gtk-shell 
+      libastal-gjs-git
+      libastal-meta
+        libastal-git
+        libastal-4-git
+        libastal-apps-git
+        libastal-auth-git
+        libastal-battery-git
+        libastal-bluetooth-git
+        libastal-cava-git
+          libcava
+        libastal-greetd-git
+        libastal-hyprland-git
+        libastal-io-git
+        libastal-mpris-git
+        libastal-network-git
+        libastal-notifd-git
+        libastal-powerprofiles-git
+        libastal-river-git
+        libastal-tray-git
+          appmenu-glib-translator-git
+        libastal-wireplumber-git
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,10 +46,13 @@ jobs:
           echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
           chown -R u:u .
 
-      - run: sudo -u u bash -c "makepkg -D ags -si --noconfirm"
+      - name: Build Astal packages
+        run: sudo -u u bash -c "./makepkg.sh `tac <<< $PACKAGES | xargs`"
+      - name: Build AGS v3
+        run: sudo -u u bash -c "makepkg -D ags -si --noconfirm"
 
       - run: |
-          rm -rf **/*-debug-*.pkg.tar.zst
+          rm -rf */*-debug-*.pkg.tar.zst
           mkdir -p packages
           mv */*.pkg.tar.zst packages
           find -name '*.pkg.tar.zst'

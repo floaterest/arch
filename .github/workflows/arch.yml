@@ -21,14 +21,16 @@ jobs:
           echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
           chown -R u:u .
 
-      - run: sudo -u u bash -c "./makepkg.sh fcitx5-mozc-ut zoom opentabletdriver"
+      - run: sudo -u u bash -c "./makepkg.sh fcitx5-mozc-ut zoom opentabletdriver typstyle-bin"
 
       - run: find -name '*.pkg.tar.zst'
       - run: echo 'Run `sudo pacman -U *.zst` to install.' >> $GITHUB_STEP_SUMMARY
 
       - run: |
+          rm -rf */*-debug-*.pkg.tar.zst
           mkdir -p packages
           mv */*.pkg.tar.zst packages
+          find -name '*.pkg.tar.zst'
 
       - name: Upload packages
         uses: actions/upload-artifact@v4
