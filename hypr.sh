@@ -38,10 +38,10 @@ function prechroot(){
 
 function postchroot(){
     locale-gen
-    echo Enter password for root
+    echo "\nEnter password for root"
     passwd
     useradd -m -G wheel -s /usr/bin/zsh u
-    echo Enter password for u
+    echo "\nEnter password for u"
     passwd u
     grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
     grub-mkconfig -o /boot/grub/grub.cfg
@@ -53,32 +53,28 @@ function hypr(){
     packages=(
         # Hyprland
         hyprland hyprlock uwsm 
-        hyprpolkitagent hyprpicker
+        hyprpolkitagent hyprpicker hyprshot 
+        swaync wofi xdg-desktop-portal-hyprland
         # sound
         sof-firmware pipewire-jack pipewire-pulse pipewire-alsa qt6-multimedia-ffmpeg phonon-qt6-mpv
         # network
-        firefox networkmanager dhcpcd iwd
+        firefox firefox-developer-edition networkmanager dhcpcd iwd
         # login
         greetd greetd-regreet
         # GUI
-        breeze breeze-gtk qt6ct-kde
+        breeze breeze-gtk qt6-wayland
 	    noto-fonts noto-fonts-cjk noto-fonts-emoji ttf-roboto
-        qt6-wayland
-        # essentials
-        swaync wofi xdg-desktop-portal-hyprland
         # kde applications
         ark bluedevil dolphin dolphin-plugins 
         ffmpegthumbs filelight francis 
         gwenview isoimagewriter 
         kdeconnect kdenlive okular partitionmanager 
-        spectacle
         qt5-imageformats
         # other applications
         alacritty
         bat broot btop
-        eza
-        fastfetch fd firewalld fzf 
-        fcitx5 fcitx5-configtool fcitx5-gtk fcitx5-qt 
+        code discord eza
+        fastfetch fd firewalld fzf fcitx5 fcitx5-configtool fcitx5-gtk fcitx5-qt 
         lazygit less libreoffice-still libavif
         mpv man-db
         neovide neovim
@@ -86,20 +82,18 @@ function hypr(){
         ripgrep rsync
         sccache starship sshfs
         unrar unzip
-        wl-clipboard
         zsh-autosuggestions zsh-completions zsh-syntax-highlighting
+        # programming languages
+        rustup typst shfmt stylua rust-analyzer tinymist
     )
-    pacman -Syu ${packages[@]}
+    pacman -Syu --no-confirm ${packages[@]}
     systemctl enable NetworkManager dhcpcd greetd
 }
 
 function paru-bin(){
     git clone https://aur.archlinux.org/paru-bin.git /tmp/paru-bin
-    cd /tmp/paru-bin && makepkg -sir
-
-    paru -S rustup jq libnotify hyprshot \
-        discord code \
-        typst shfmt stylua typstyle-bin rust-analyzer tinymist
+    makepkg -D /tmp/paru-bin -sir
+    paru -S qt6ct-kde
 }
 
 function postinstall(){

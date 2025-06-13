@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 env:
+    # aylurs-gtk-shell 
   PACKAGES: |
-    aylurs-gtk-shell 
       libastal-gjs-git
       libastal-meta
         libastal-git
