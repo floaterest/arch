@@ -2,5 +2,5 @@ set -ex
 
 for v in "$@"; do
     git clone https://aur.archlinux.org/$v.git
-    makepkg -D $v -s --noconfirm
+    makepkg -D $v -si --noconfirm
 done

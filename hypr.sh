@@ -25,13 +25,15 @@ function mkfs-nvme(){
 }
 
 function prechroot(){
+    echo -n "Enter hostname: "
+    read hostname
     pacstrap -K /mnt base base-devel linux linux-firmware grub efibootmgr git vi zsh os-prober # in case you need to dual boot
     perl -pi -e 's/#(?=en_US.UTF-8 UTF-8)//' /mnt/etc/locale.gen
     perl -pi -e 's/#(?=Color)//' /mnt/etc/pacman.conf
     perl -pi -e 's/# (?=%wheel ALL=\(ALL:ALL\) ALL)/Defaults insults\n/' /mnt/etc/sudoers
     genfstab -U /mnt > /mnt/etc/fstab
     printf "LANG=en_US.UTF-8\nLC_CTYPE=en_US.UTF-8\n" > /mnt/etc/locale.conf
-    echo DESKTOP > /mnt/etc/hostname
+    echo $hostname > /mnt/etc/hostname
 }
 
 function postchroot(){
