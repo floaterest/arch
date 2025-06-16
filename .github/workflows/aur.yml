@@ -21,8 +21,7 @@ jobs:
           echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
           chown -R u:u .
 
-      # - run: sudo -u u bash -c "./makepkg.sh qt6ct-kde fcitx5-mozc-ut zoom opentabletdriver typstyle-bin"
-      - run: sudo -u u bash -c "./makepkg.sh paru-bin qt6ct-kde opentabletdriver"
+      - run: sudo -u u bash -c "./makepkg.sh paru-bin fcitx5-mozc-ut zoom opentabletdriver typstyle-bin"
 
       - run: |
           find -name '*-debug-*.pkg.tar.zst' -exec rm {} \;
