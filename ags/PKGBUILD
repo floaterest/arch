@@ -13,7 +13,7 @@ depends=(
         "gtk4-layer-shell"
 )
 source=(
-        "git+${url}.git#branch=v3"
+        "git+${url}.git#branch=gtk4-ags3"
         "git+https://github.com/Aylur/gjsx.git"
 )
 sha256sums=('SKIP' 'SKIP')
