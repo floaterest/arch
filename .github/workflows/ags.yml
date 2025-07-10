@@ -48,14 +48,16 @@ jobs:
 
       - name: Build Astal packages
         run: sudo -u u bash -c "./makepkg.sh `tac <<< $PACKAGES | xargs`"
+
       - name: Build AGS v3
         run: sudo -u u bash -c "makepkg -D ags -si --noconfirm"
 
       - run: |
-          rm -rf */*-debug-*.pkg.tar.zst
+          find -name '*-debug-*.pkg.tar.zst' -exec rm {} \;
           mkdir -p packages
-          mv */*.pkg.tar.zst packages
-          find -name '*.pkg.tar.zst'
+          find -name '*.pkg.tar.zst' -exec mv {} packages \;
+          echo 'Run `sudo pacman -U *.zst` to install.' >> $GITHUB_STEP_SUMMARY
+          ls packages | sed 's/^/- /g' >> $GITHUB_STEP_SUMMARY
 
       - name: Upload packages
         uses: actions/upload-artifact@v4

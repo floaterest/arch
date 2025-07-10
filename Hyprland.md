@@ -83,19 +83,28 @@ run `mount /dev/sdb1 /mnt` to mount external harddrive
 
 run `su u` to switch to user
 
-- copy backup to /home
-- **paru** to install paru and packages
+- copy backup to $HOME
+  ```
+  (rsync)
+  ```
+- download AUR packages from GitHub Actions 
+  ```
+  curl -O 192.168.x.x:3000/packages.zip
+  ```
+- unzip and install AUR packages
+  ```
+  sudo pacman -U *.zst
+  ```
+- run `broot` to install br
 
 `exit` from arch-chroot, then `reboot`
 
 ## Postinstallation
 
-- run `nmcli` to activate a connection (might be doable before postinstall)
-- run `broot` to install br
+- run `nmtui` to activate a connection
+- run **postinstall**
 
 **postinstall** to do more stuff (install more packages)
 - OpenTabletDriver
     - import settings
     - if nonwacom table is not detected and `hid_uclogic` is in `lsmod`, add `blacklist hid_uclogic` to `/usr/lib/modprobe.d/blacklist.conf`
-
-Install AGS 

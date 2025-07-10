@@ -6,6 +6,15 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  PACKAGES: |
+    paru-bin
+    qt6ct-kde
+    fcitx5-mozc-ut
+    zoom
+    opentabletdriver
+    typstyle-bin
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,17 +30,14 @@ jobs:
           echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
           chown -R u:u .
 
-      - run: sudo -u u bash -c "./makepkg.sh paru-bin fcitx5-mozc-ut zoom opentabletdriver typstyle-bin"
+      - run: sudo -u u bash -c "./makepkg.sh `xargs <<< $PACKAGES`"
 
       - run: |
           find -name '*-debug-*.pkg.tar.zst' -exec rm {} \;
           mkdir -p packages
           find -name '*.pkg.tar.zst' -exec mv {} packages \;
-
-      - run: |
           echo 'Run `sudo pacman -U *.zst` to install.' >> $GITHUB_STEP_SUMMARY
           ls packages | sed 's/^/- /g' >> $GITHUB_STEP_SUMMARY
-
 
       - name: Upload packages
         uses: actions/upload-artifact@v4

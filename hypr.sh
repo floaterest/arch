@@ -54,7 +54,8 @@ function hypr(){
         # Hyprland
         hyprland hyprlock uwsm 
         hyprpolkitagent hyprpicker hyprshot 
-        swaync wofi xdg-desktop-portal-hyprland
+        swaync wofi xdg-desktop-portal-hyprland network-manager-applet
+        dart-sass # for ags
         # sound
         sof-firmware pipewire-jack pipewire-pulse pipewire-alsa qt6-multimedia-ffmpeg phonon-qt6-mpv
         # network
@@ -87,20 +88,12 @@ function hypr(){
         rustup typst shfmt stylua rust-analyzer tinymist
     )
     pacman -Syu --no-confirm ${packages[@]}
-    systemctl enable NetworkManager dhcpcd greetd
-}
-
-function paru-bin(){
+    systemctl enable --now NetworkManager dhcpcd greetd
 }
 
 function postinstall(){
-    # git clone https://aur.archlinux.org/paru-bin.git /tmp/paru-bin
-    # makepkg -D /tmp/paru-bin -sir
-
     # timedatectl list-timezones
-    timedatectl set-timezone 'America/Toronto'
-
-    # (install .zst)
+    sudo timedatectl set-timezone 'America/Toronto'
     systemctl --user daemon-reload
     systemctl --user enable opentabletdriver
 }
@@ -172,8 +165,7 @@ options=(
     "  pre-chroot : pacstrap, setup local, fsdab, hostname"
     " post-chroot : local-gen, passwd, grub-install"
     "     as root : install hyprland packages"
-    "     as user : install paru and packages"
-    "post-install : do more stuff"
+    "post-install : post-installation setup"
 )
 choice=`select_opt "${options[@]}"`
 
@@ -183,8 +175,7 @@ case $choice in
     2) run prechroot;;
     3) run postchroot;;
     4) run hypr;;
-    5) run paru-bin;;
-    6) run postinstall;;
+    5) run postinstall;;
     *) echo "invalid option $REPLY";;
 esac
 
