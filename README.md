@@ -163,3 +163,17 @@ Fcitx5's fault. Solution: set `kxkbrc` to immutable
 sudo chattr +i ~/.config/kxkbrc
 ```
 
+## Dolphin Opens Files with no Application Association [🔗](https://bbs.archlinux.org/viewtopic.php?pid=2169212#p2169212)
+
+download plasma-workspace
+
+```bash
+sudo pacman -Sw plasma-workspace
+tar xvf /var/cache/pacman/pkg/plasma-workspace-*.pkg.tar.zst
+```
+
+copy `etc/xdg/menus/plasma-applications.menu` to `~/.config/menus/`
+
+run `kbuildsycoca6`
+
+maybe also copy plasma-applications.menu to /etc/xdg/menus/applications.menu

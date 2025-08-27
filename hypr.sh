@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -e
 
 function mkfs-sda(){
@@ -56,6 +55,7 @@ function hypr(){
         hyprpolkitagent hyprpicker hyprshot 
         swaync wofi xdg-desktop-portal-hyprland network-manager-applet
         dart-sass # for ags
+        egl-wayland # explicit rendering
         # sound
         sof-firmware pipewire-jack pipewire-pulse pipewire-alsa qt6-multimedia-ffmpeg phonon-qt6-mpv
         # network
