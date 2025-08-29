@@ -108,3 +108,35 @@ run `su u` to switch to user
 - OpenTabletDriver
     - import settings
     - if nonwacom table is not detected and `hid_uclogic` is in `lsmod`, add `blacklist hid_uclogic` to `/usr/lib/modprobe.d/blacklist.conf`
+
+## Troubleshooting
+### OpenTabletDriver
+**Not wacom, cannot detect tablet**
+```bash
+sudo rmmod hid_uclogic
+```
+
+### Cannot Play Video [🔗](https://bbs.archlinux.org/viewtopic.php?id=273202)
+
+```bash
+systemctl --user mask wireplumber --now
+```
+
+## Keyboard Layout Resets after Login [🔗](https://bbs.archlinux.org/viewtopic.php?pid=2088382#p2088382)
+
+Fcitx5's fault. Solution: set `kxkbrc` to immutable
+
+```bash
+sudo chattr +i ~/.config/kxkbrc
+```
+
+## Dolphin Opens Files with no Application Association [🔗](https://bbs.archlinux.org/viewtopic.php?pid=2169212#p2169212)
+
+download plasma-workspace
+
+```bash
+sudo pacman -Sw plasma-workspace
+tar xvf /var/cache/pacman/pkg/plasma-workspace-*.pkg.tar.zst
+cp etc/xdg/menus/plasma-applications.menu ~/.config/menus/
+kbuildsycoca6
+```
