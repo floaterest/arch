@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-
 set -e
 
 function mkfs-sda(){
-    # mkfs.fat -F32 /dev/sda1 # iff partition was not created for boot
+    # mkfs.fat -F32 /dev/sda1 # if partition was not created for boot
     mkswap /dev/sda2
     swapon /dev/sda2
     mkfs.ext4 /dev/sda3
@@ -14,7 +13,7 @@ function mkfs-sda(){
 }
 
 function mkfs-nvme(){
-    # mkfs.fat -F32 /dev/nvme0n1p1 # iff partition was not created for boot
+    # mkfs.fat -F32 /dev/nvme0n1p1 # if partition was not created for boot
     mkswap /dev/nvme0n1p2
     mkfs.ext4 /dev/nvme0n1p3
     swapon /dev/nvme0n1p2
@@ -24,68 +23,79 @@ function mkfs-nvme(){
     lsblk
 }
 
-function pstrap(){
-    pacstrap -K /mnt base base-devel linux linux-firmware grub efibootmgr git vi zsh
+function prechroot(){
+    echo -n "Enter hostname: "
+    read hostname
+    pacstrap -K /mnt base base-devel linux linux-firmware grub efibootmgr git vi zsh os-prober # in case you need to dual boot
     perl -pi -e 's/#(?=en_US.UTF-8 UTF-8)//' /mnt/etc/locale.gen
     perl -pi -e 's/#(?=Color)//' /mnt/etc/pacman.conf
     perl -pi -e 's/# (?=%wheel ALL=\(ALL:ALL\) ALL)/Defaults insults\n/' /mnt/etc/sudoers
     genfstab -U /mnt > /mnt/etc/fstab
     printf "LANG=en_US.UTF-8\nLC_CTYPE=en_US.UTF-8\n" > /mnt/etc/locale.conf
-    echo DESKTOP > /mnt/etc/hostname
+    echo $hostname > /mnt/etc/hostname
 }
 
-function chroot(){
+function postchroot(){
     locale-gen
+    echo "\nEnter password for root"
     passwd
     useradd -m -G wheel -s /usr/bin/zsh u
+    echo "\nEnter password for u"
     passwd u
     grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
     grub-mkconfig -o /boot/grub/grub.cfg
+    git clone --depth 1 https://github.com/vinceliuice/grub2-themes.git /tmp/grub2-themes
+    /tmp/grub2-themes/install.sh -t stylish
 }
 
-function pacman_(){
+function hypr(){
     packages=(
-        sddm firefox sof-firmware networkmanager dhcpcd iwd
-	    # skip choices
-	    noto-fonts noto-fonts-emoji pipewire-jack qt6-multimedia-gstreamer cronie
-        # plasma
-        bluedevil breeze breeze-gtk breeze-plymouth kactivitymanagerd kde-cli-tools kde-gtk-config kdecoration kdeplasma-addons kgamma kglobalacceld kinfocenter kmenuedit kpipewire kscreen kscreenlocker ksystemstats kwayland kwin layer-shell-qt libkscreen libksysguard libplasma plasma5support plasma-activities plasma-activities-stats plasma-browser-integration plasma-desktop plasma-disks plasma-firewall plasma-integration plasma-nm plasma-pa plasma-sdk plasma-systemmonitor plasma-thunderbolt plasma-workspace plymouth-kcm powerdevil print-manager sddm-kcm spectacle systemsettings wacomtablet xdg-desktop-portal-kde
-        # kde-applications
-        ark colord-kde dolphin dolphin-plugins ffmpegthumbs filelight francis gwenview isoimagewriter kalk kamera kamoso kate kcolorchooser kcron kdeconnect kdegraphics-thumbnailers kdenetwork-filesharing kdenlive kdialog keditbookmarks kget kjournald kmix kmousetool kmouth konsole ksystemlog kwave okular partitionmanager
-        # other
-        bat broot btop
-        eza
-        fd firewalld fzf fcitx5 fcitx5-configtool fcitx5-gtk fcitx5-qt 
-        krita
-        lazygit less libreoffice-still libavif
-        mpv
-        neofetch neovide neovim
-        obs-studio openssh
-        pipewire-alsa
+        # Hyprland
+        hyprland hyprlock uwsm 
+        hyprpolkitagent hyprpicker hyprshot 
+        swaync wofi xdg-desktop-portal-hyprland network-manager-applet
+        dart-sass # for ags
+        egl-wayland # explicit rendering
+        # sound
+        sof-firmware pipewire-jack pipewire-pulse pipewire-alsa qt6-multimedia-ffmpeg phonon-qt6-mpv
+        # network
+        firefox firefox-developer-edition networkmanager dhcpcd iwd
+        # login
+        greetd greetd-regreet
+        # GUI
+        breeze breeze-gtk qt6-wayland
+	    noto-fonts noto-fonts-cjk noto-fonts-emoji ttf-roboto
+        # kde applications
+        ark bluedevil dolphin dolphin-plugins 
+        ffmpegthumbs filelight francis 
+        gwenview isoimagewriter 
+        kdeconnect kdenlive okular partitionmanager 
         qt5-imageformats
-        ripgrep 
-        sccache starship
+        # other applications
+        alacritty
+        bat broot btop
+        code discord eza
+        fastfetch fd firewalld fzf fcitx5 fcitx5-configtool fcitx5-gtk fcitx5-qt 
+        lazygit less libreoffice-still libavif
+        mpv man-db
+        neovide neovim
+        obs-studio openssh
+        ripgrep rsync
+        sccache starship sshfs
         unrar unzip
-        wl-clipboard
         zsh-autosuggestions zsh-completions zsh-syntax-highlighting
+        # programming languages
+        rustup typst shfmt stylua rust-analyzer tinymist
     )
-    pacman -Syu ${packages[@]}
-    systemctl enable sddm NetworkManager dhcpcd
+    pacman -Syu --no-confirm ${packages[@]}
+    systemctl enable --now NetworkManager dhcpcd greetd
 }
 
-function paru-bin(){
-    git clone https://aur.archlinux.org/paru-bin.git /tmp/paru-bin
-    cd /tmp/paru-bin
-    makepkg -sir
-}
-
-function misc(){
-    paru -Sa opentabletdriver
+function postinstall(){
+    # timedatectl list-timezones
+    sudo timedatectl set-timezone 'America/Toronto'
     systemctl --user daemon-reload
-    systemctl --user enable opentabletdriver --now
-    
-    paru -Syu vscodium-bin stylua typstyle-bin rust-analyzer rustup discord tinymist rsync
-    mkdir -p ~/.ssh
+    systemctl --user enable opentabletdriver
 }
 
 function select_opt() {
@@ -150,23 +160,22 @@ function run(){
 }
 
 options=(
-    "  mkfs (sda) : efi on 1, swap on 2, /mnt on 3"
-    "      (nvme) : efi on 1, swap on 2, /mnt/ on 3"
+    " mkfs  (sda) : efi on 1, swap on 2, /mnt on 3"
+    " mkfs (nvme) : efi on 1, swap on 2, /mnt/ on 3"
     "  pre-chroot : pacstrap, setup local, fsdab, hostname"
     " post-chroot : local-gen, passwd, grub-install"
-    "             : install KDE packages"
-    "post-install : install paru"
-    "             : install more packages"
+    "     as root : install hyprland packages"
+    "post-install : post-installation setup"
 )
 choice=`select_opt "${options[@]}"`
 
 case $choice in
     0) run mkfs-sda;;
     1) run mkfs-nvme;;
-    2) run pstrap;;
-    3) run chroot;;
-    4) run pacman_;;
-    5) run paru-bin;;
-    6) run misc;;
+    2) run prechroot;;
+    3) run postchroot;;
+    4) run hypr;;
+    5) run postinstall;;
     *) echo "invalid option $REPLY";;
 esac
+
