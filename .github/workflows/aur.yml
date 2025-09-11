@@ -8,13 +8,8 @@ on:
 
 env:
   PACKAGES: |
-    paru-bin
-    qt6ct-kde
-    fcitx5-mozc-ut
-    zoom
-    opentabletdriver
-    typstyle-bin
     quickshell 
+      google-breakpad
 
 jobs:
   build:
