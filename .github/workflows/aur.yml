@@ -26,7 +26,7 @@ jobs:
           echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
           chown -R u:u .
 
-      - run: sudo -u u bash -c "./makepkg.sh `xargs <<< $PACKAGES`"
+      - run: sudo -u u bash -c "./makepkg.sh `tac <<< $PACKAGES | xargs`"
 
       - run: |
           find -name '*-debug-*.pkg.tar.zst' -exec rm {} \;
