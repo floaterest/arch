@@ -8,12 +8,6 @@ on:
 
 env:
   PACKAGES: |
-    paru-bin
-    qt6ct-kde
-    fcitx5-mozc-ut
-    zoom
-    opentabletdriver
-    typstyle-bin
     quickshell 
       google-breakpad
 
@@ -24,28 +18,28 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      # - run: pacman -Syu --noconfirm git base-devel sudo
-      #
-      # - name: Create a non-root user
-      #   run: |
-      #     useradd -m u
-      #     echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
-      #     chown -R u:u .
+      - run: pacman -Syu --noconfirm git base-devel sudo
 
-      # - run: sudo -u u bash -c "./makepkg.sh `tac <<< $PACKAGES | xargs`"
+      - name: Create a non-root user
+        run: |
+          useradd -m u
+          echo "u ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/u
+          chown -R u:u .
 
-      # - run: |
-      #     find -name '*-debug-*.pkg.tar.zst' -exec rm {} \;
-      #     mkdir -p packages
-      #     find -name '*.pkg.tar.zst' -exec mv {} packages \;
-      #     echo 'Run `sudo pacman -U *.zst` to install.' >> $GITHUB_STEP_SUMMARY
-      #     ls packages | sed 's/^/- /g' >> $GITHUB_STEP_SUMMARY
+      - run: sudo -u u bash -c "./makepkg.sh `tac <<< $PACKAGES | xargs`"
 
-      # - name: Upload packages
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: packages
-      #     path: packages
+      - run: |
+          find -name '*-debug-*.pkg.tar.zst' -exec rm {} \;
+          mkdir -p packages
+          find -name '*.pkg.tar.zst' -exec mv {} packages \;
+          echo 'Run `sudo pacman -U *.zst` to install.' >> $GITHUB_STEP_SUMMARY
+          ls packages | sed 's/^/- /g' >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: packages
   clear:
     needs: build
     runs-on: ubuntu-latest
