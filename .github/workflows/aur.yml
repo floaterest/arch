@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      # - run: pacman -Syu --noconfirm git base-devel sudo
+      - run: pacman -Syu --noconfirm git base-devel sudo github-cli
       #
       # - name: Create a non-root user
       #   run: |
