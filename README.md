@@ -2,19 +2,19 @@
 
 Backup to external HHD:
 - ~/
-  - (floaterest/dot)
-  - .config/nvim
-  - .local/share/fonts/
+  - .config/nvim/
   - .mozilla/firefox/
-  - .ssh/
   - .thunderbird/
+  - .ssh/
   - Documents/
   - Downloads/
   - Music/
   - Pictures/
   - Templates/
   - Videos/
+- dot
 - /opt/vscodium-bin/data/
+- Thunderbird export
 - /etc/greetd/
 
 ## Preinstallation
@@ -56,7 +56,7 @@ if need to create partitions:
 - new, the rest, primary for `sda3` as root and home
 - `write` and exit cdfisk
 
-`bash -c "$(curl 192.168.x.x:3000/hypr.sh)$` to run **mkfs** on sda or nvme
+`bash -c "$(curl 192.168.x.x:3000/script.sh)$` to run **mkfs** on sda or nvme
 
 ### Install Linux
 

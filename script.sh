@@ -57,8 +57,8 @@ function hypr(){
         egl-wayland # explicit rendering
         # sound
         sof-firmware wireplumber
-        # pipewire pipewire-audio pipewire-jack pipewire-pulse pipewire-alsa
-        qt6-multimedia-ffmpeg phonon-qt6-mpv
+        pipewire pipewire-audio pipewire-jack pipewire-pulse pipewire-alsa
+        qt6-multimedia-ffmpeg
         # network
         firefox firefox-developer-edition networkmanager dhcpcd iwd
         # login
@@ -88,7 +88,7 @@ function hypr(){
         # programming languages
         rustup typst shfmt stylua rust-analyzer tinymist
     )
-    pacman -Syu --no-confirm ${packages[@]}
+    pacman -Syu --noconfirm ${packages[@]}
     systemctl enable --now NetworkManager dhcpcd greetd
 }
 
