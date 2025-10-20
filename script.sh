@@ -53,6 +53,7 @@ function hypr(){
         # Hyprland
         hyprland hyprlock uwsm 
         hyprpolkitagent hyprpicker hyprshot 
+        brightnessctl
         swaync wofi xdg-desktop-portal-hyprland network-manager-applet
         egl-wayland # explicit rendering
         # sound
@@ -89,12 +90,12 @@ function hypr(){
         rustup typst shfmt stylua rust-analyzer tinymist
     )
     pacman -Syu --noconfirm ${packages[@]}
-    systemctl enable --now NetworkManager dhcpcd greetd
+    systemctl enable NetworkManager dhcpcd greetd
 }
 
 function postinstall(){
     # timedatectl list-timezones
-    sudo timedatectl set-timezone 'America/Toronto'
+    sudo timedatectl set-timezone 'Asia/Tokyo'
     systemctl --user daemon-reload
     systemctl --user enable opentabletdriver
 }

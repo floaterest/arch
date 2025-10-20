@@ -8,12 +8,22 @@ on:
 
 env:
   PACKAGES: |
+<<<<<<< HEAD
     paru-bin
     qt6ct-kde
     fcitx5-mozc-ut
     zoom
     opentabletdriver
     typstyle-bin
+=======
+    fcitx5-mozc-ut
+    opentabletdriver
+    paru-bin
+    qt6ct-kde
+    typstyle-bin
+    zoom
+    zotero-bin
+>>>>>>> bec5ea1 (aur.yml PKGBUILD README.md script.sh)
     quickshell 
       google-breakpad
 
