@@ -21,6 +21,8 @@ function mkfs-nvme(){
     mkdir -p /mnt/efi
     mount /dev/nvme0n1p1 /mnt/efi
     lsblk
+
+    echo "Please run prechroot"
 }
 
 function prechroot(){
@@ -33,19 +35,23 @@ function prechroot(){
     genfstab -U /mnt > /mnt/etc/fstab
     printf "LANG=en_US.UTF-8\nLC_CTYPE=en_US.UTF-8\n" > /mnt/etc/locale.conf
     echo $hostname > /mnt/etc/hostname
+
+    echo "Please arch-chroot /mnt, then run postchroot"
 }
 
 function postchroot(){
     locale-gen
-    echo "\nEnter password for root"
+    printf "\nEnter password for root\n"
     passwd
     useradd -m -G wheel -s /usr/bin/zsh u
-    echo "\nEnter password for u"
+    printf "\nEnter password for u\n"
     passwd u
     grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
     grub-mkconfig -o /boot/grub/grub.cfg
     git clone --depth 1 https://github.com/vinceliuice/grub2-themes.git /tmp/grub2-themes
     /tmp/grub2-themes/install.sh -t stylish
+
+    echo "Please run hyprland"
 }
 
 function hypr(){
@@ -55,7 +61,7 @@ function hypr(){
         hyprpolkitagent hyprpicker hyprshot 
         brightnessctl
         swaync wofi xdg-desktop-portal-hyprland network-manager-applet
-        egl-wayland # explicit rendering
+        # egl-wayland # explicit rendering
         # sound
         sof-firmware wireplumber
         pipewire pipewire-audio pipewire-jack pipewire-pulse pipewire-alsa
@@ -66,7 +72,7 @@ function hypr(){
         greetd greetd-regreet
         # GUI
         breeze breeze-gtk qt6-wayland
-	    noto-fonts noto-fonts-cjk noto-fonts-emoji ttf-roboto
+        noto-fonts noto-fonts-cjk noto-fonts-emoji ttf-roboto
         # kde applications
         ark bluedevil dolphin dolphin-plugins 
         ffmpegthumbs filelight francis 
@@ -91,11 +97,15 @@ function hypr(){
     )
     pacman -Syu --noconfirm ${packages[@]}
     systemctl enable NetworkManager dhcpcd greetd
+    # timedatectl list-timezones
+    timedatectl set-timezone 'Asia/Tokyo'
+
+    # TODO install AUR packages here
+
+    echo "Please su u, then restore backup from the external harddrive"
 }
 
 function postinstall(){
-    # timedatectl list-timezones
-    sudo timedatectl set-timezone 'Asia/Tokyo'
     systemctl --user daemon-reload
     systemctl --user enable opentabletdriver
 }
@@ -166,7 +176,7 @@ options=(
     " mkfs (nvme) : efi on 1, swap on 2, /mnt/ on 3"
     "  pre-chroot : pacstrap, setup local, fsdab, hostname"
     " post-chroot : local-gen, passwd, grub-install"
-    "     as root : install hyprland packages"
+    "    hyprland : install hyprland packages"
     "post-install : post-installation setup"
 )
 choice=`select_opt "${options[@]}"`
