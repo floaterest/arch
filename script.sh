@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-function mkfs-sda(){
+function mkfs-sda() {
     # mkfs.fat -F32 /dev/sda1 # if partition was not created for boot
     mkswap /dev/sda2
     swapon /dev/sda2
@@ -12,7 +12,7 @@ function mkfs-sda(){
     lsblk
 }
 
-function mkfs-nvme(){
+function mkfs-nvme() {
     # mkfs.fat -F32 /dev/nvme0n1p1 # if partition was not created for boot
     mkswap /dev/nvme0n1p2
     mkfs.ext4 /dev/nvme0n1p3
@@ -25,21 +25,21 @@ function mkfs-nvme(){
     echo "Please run prechroot"
 }
 
-function prechroot(){
+function prechroot() {
     echo -n "Enter hostname: "
     read hostname
     pacstrap -K /mnt base base-devel linux linux-firmware grub efibootmgr git vi zsh os-prober # in case you need to dual boot
     perl -pi -e 's/#(?=en_US.UTF-8 UTF-8)//' /mnt/etc/locale.gen
     perl -pi -e 's/#(?=Color)//' /mnt/etc/pacman.conf
     perl -pi -e 's/# (?=%wheel ALL=\(ALL:ALL\) ALL)/Defaults insults\n/' /mnt/etc/sudoers
-    genfstab -U /mnt > /mnt/etc/fstab
-    printf "LANG=en_US.UTF-8\nLC_CTYPE=en_US.UTF-8\n" > /mnt/etc/locale.conf
-    echo $hostname > /mnt/etc/hostname
+    genfstab -U /mnt >/mnt/etc/fstab
+    printf "LANG=en_US.UTF-8\nLC_CTYPE=en_US.UTF-8\n" >/mnt/etc/locale.conf
+    echo $hostname >/mnt/etc/hostname
 
     echo "Please arch-chroot /mnt, then run postchroot"
 }
 
-function postchroot(){
+function postchroot() {
     locale-gen
     printf "\nEnter password for root\n"
     passwd
@@ -54,11 +54,11 @@ function postchroot(){
     echo "Please run hyprland"
 }
 
-function hypr(){
+function hypr() {
     packages=(
         # Hyprland
-        hyprland hyprlock uwsm 
-        hyprpolkitagent hyprpicker hyprshot 
+        hyprland hyprlock uwsm
+        hyprpolkitagent hyprpicker hyprshot
         brightnessctl
         swaync wofi xdg-desktop-portal-hyprland network-manager-applet
         # egl-wayland # explicit rendering
@@ -74,16 +74,16 @@ function hypr(){
         breeze breeze-gtk qt6-wayland
         noto-fonts noto-fonts-cjk noto-fonts-emoji ttf-roboto
         # kde applications
-        ark bluedevil dolphin dolphin-plugins 
-        ffmpegthumbs filelight francis 
-        gwenview isoimagewriter 
-        kdeconnect kdenlive okular partitionmanager 
+        ark bluedevil dolphin dolphin-plugins
+        ffmpegthumbs filelight francis
+        gwenview isoimagewriter
+        kdeconnect kdenlive okular partitionmanager
         qt5-imageformats
         # other applications
         alacritty
         bat broot btop
         code discord eza
-        fastfetch fd firewalld fzf fcitx5 fcitx5-configtool fcitx5-gtk fcitx5-qt 
+        fastfetch fd firewalld fzf fcitx5 fcitx5-configtool fcitx5-gtk fcitx5-qt
         lazygit less libreoffice-still libavif
         mpv man-db
         neovide neovim
@@ -97,15 +97,14 @@ function hypr(){
     )
     pacman -Syu --noconfirm ${packages[@]}
     systemctl enable NetworkManager dhcpcd greetd
-    # timedatectl list-timezones
-    timedatectl set-timezone 'Asia/Tokyo'
 
     # TODO install AUR packages here
 
     echo "Please su u, then restore backup from the external harddrive"
 }
 
-function postinstall(){
+function postinstall() {
+    sudo timedatectl set-timezone 'Asia/Tokyo' # timedatectl list-timezones
     systemctl --user daemon-reload
     systemctl --user enable opentabletdriver
 }
@@ -117,19 +116,24 @@ function select_opt() {
 
 # https://unix.stackexchange.com/a/415155
 function select_option() {
-    ESC=$( printf "\033")
-    cursor_blink_on()  { printf "$ESC[?25h"; }
+    ESC=$(printf "\033")
+    cursor_blink_on() { printf "$ESC[?25h"; }
     cursor_blink_off() { printf "$ESC[?25l"; }
-    cursor_to()        { printf "$ESC[$1;${2:-1}H"; }
-    print_option()     { printf "  $1 "; }
-    print_selected()   { printf " $ESC[7m $1 $ESC[27m"; }
-    get_cursor_row()   { IFS=';' read -sdR -p $'\E[6n' ROW COL; echo ${ROW#*[}; }
-    key_input()        { read -s -n3 key 2>/dev/null >&2
-                         if [[ $key = $ESC[A ]]; then echo up;    fi
-                         if [[ $key = $ESC[B ]]; then echo down;  fi
-                         if [[ $key = ""     ]]; then echo enter; fi; }
+    cursor_to() { printf "$ESC[$1;${2:-1}H"; }
+    print_option() { printf "  $1 "; }
+    print_selected() { printf " $ESC[7m $1 $ESC[27m"; }
+    get_cursor_row() {
+        IFS=';' read -sdR -p $'\E[6n' ROW COL
+        echo ${ROW#*[}
+    }
+    key_input() {
+        read -s -n3 key 2>/dev/null >&2
+        if [[ $key = $ESC[A ]]; then echo up; fi
+        if [[ $key = $ESC[B ]]; then echo down; fi
+        if [[ $key = "" ]]; then echo enter; fi
+    }
     for opt; do printf "\n"; done
-    local lastrow=`get_cursor_row`
+    local lastrow=$(get_cursor_row)
     local startrow=$(($lastrow - $#))
     trap "cursor_blink_on; stty echo; printf '\n'; exit" 2
     cursor_blink_off
@@ -149,12 +153,16 @@ function select_option() {
         done
 
         # user key control
-        case `key_input` in
-            enter) break;;
-            up)    ((selected--));
-                   if [ $selected -lt 0 ]; then selected=$(($# - 1)); fi;;
-            down)  ((selected++));
-                   if [ $selected -ge $# ]; then selected=0; fi;;
+        case $(key_input) in
+        enter) break ;;
+        up)
+            ((selected--))
+            if [ $selected -lt 0 ]; then selected=$(($# - 1)); fi
+            ;;
+        down)
+            ((selected++))
+            if [ $selected -ge $# ]; then selected=0; fi
+            ;;
         esac
     done
 
@@ -166,8 +174,8 @@ function select_option() {
     return $selected
 }
 
-function run(){
-    read -p "`declare -f $1`"
+function run() {
+    read -p "$(declare -f $1)"
     $1
 }
 
@@ -179,15 +187,14 @@ options=(
     "    hyprland : install hyprland packages"
     "post-install : post-installation setup"
 )
-choice=`select_opt "${options[@]}"`
+choice=$(select_opt "${options[@]}")
 
 case $choice in
-    0) run mkfs-sda;;
-    1) run mkfs-nvme;;
-    2) run prechroot;;
-    3) run postchroot;;
-    4) run hypr;;
-    5) run postinstall;;
-    *) echo "invalid option $REPLY";;
+0) run mkfs-sda ;;
+1) run mkfs-nvme ;;
+2) run prechroot ;;
+3) run postchroot ;;
+4) run hypr ;;
+5) run postinstall ;;
+*) echo "invalid option $REPLY" ;;
 esac
-
