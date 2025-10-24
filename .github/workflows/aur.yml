@@ -10,15 +10,15 @@ env:
   PACKAGES: |
     fcitx5-mozc-ut
       mozc-ut
-  # betterbird-bin
-  # opentabletdriver
-  # paru-bin
-  # qt6ct-kde
-  # typstyle-bin
-  # zoom
-  # zotero-bin
-  # quickshell 
-  #   google-breakpad
+    betterbird-bin
+    opentabletdriver
+    paru-bin
+    qt6ct-kde
+    typstyle-bin
+    zoom
+    zotero-bin
+    quickshell 
+      google-breakpad
 
 jobs:
   build:
