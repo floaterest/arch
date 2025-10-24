@@ -8,16 +8,16 @@ on:
 
 env:
   PACKAGES: |
-    betterbird-bin
     fcitx5-mozc-ut
-    opentabletdriver
-    paru-bin
-    qt6ct-kde
-    typstyle-bin
-    zoom
-    zotero-bin
-    quickshell 
-      google-breakpad
+  # betterbird-bin
+  # opentabletdriver
+  # paru-bin
+  # qt6ct-kde
+  # typstyle-bin
+  # zoom
+  # zotero-bin
+  # quickshell 
+  #   google-breakpad
 
 jobs:
   build:
