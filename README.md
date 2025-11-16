@@ -13,9 +13,8 @@ Backup to external HHD:
   - Templates/
   - Videos/
 - dot
-- /opt/vscodium-bin/data/
-- Thunderbird export
 - /etc/greetd/
+- /etc//etc/NetworkManager/conf.d
 
 ## Preinstallation
 

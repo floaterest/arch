@@ -82,7 +82,7 @@ function hypr() {
         # other applications
         alacritty
         bat broot btop
-        code discord eza
+        code direnv discord eza
         fastfetch fd firewalld fzf fcitx5 fcitx5-configtool fcitx5-gtk fcitx5-qt
         lazygit less libreoffice-still libavif
         mpv man-db

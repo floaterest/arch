@@ -8,6 +8,7 @@ on:
 
 env:
   PACKAGES: |
+    webcord
     fcitx5-mozc-ut
       mozc-ut
     betterbird-bin
