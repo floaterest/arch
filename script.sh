@@ -93,7 +93,7 @@ function hypr() {
         unrar unzip
         zsh-autosuggestions zsh-completions zsh-syntax-highlighting
         # programming languages
-        rustup typst shfmt stylua rust-analyzer tinymist
+        rustup opam typst shfmt stylua rust-analyzer tinymist
     )
     pacman -Syu --noconfirm ${packages[@]}
     systemctl enable NetworkManager dhcpcd greetd

@@ -1,5 +1,9 @@
 # Arch Linux + Hyprland
 
+```
+./cp ~/.config/nvim ~/.mozilla/firefox/ ~/.thunderbird/ ~/.ssh ~/Documents ~/Downloads ~/Music ~/Pictures ~/Templates ~/Videos /etc/greetd /etc/NetworkManager/conf.d . 
+```
+
 Backup to external HHD:
 - ~/
   - .config/nvim/
@@ -14,7 +18,7 @@ Backup to external HHD:
   - Videos/
 - dot
 - /etc/greetd/
-- /etc//etc/NetworkManager/conf.d
+- /etc/NetworkManager/conf.d/
 
 ## Preinstallation
 
@@ -107,6 +111,13 @@ run `su u` to switch to user
 - OpenTabletDriver
     - import settings
     - if nonwacom table is not detected and `hid_uclogic` is in `lsmod`, add `blacklist hid_uclogic` to `/usr/lib/modprobe.d/blacklist.conf`
+
+### OCaml
+
+```bash
+opam init -y
+opam install ocaml-lsp-server odoc ocamlformat utop ott
+```
 
 ## Troubleshooting
 ### OpenTabletDriver
