@@ -73,6 +73,7 @@ function hypr() {
         # GUI
         breeze breeze-gtk qt6-wayland
         noto-fonts noto-fonts-cjk noto-fonts-emoji ttf-roboto
+        quickshell
         # kde applications
         ark bluedevil dolphin dolphin-plugins
         ffmpegthumbs filelight francis
@@ -84,6 +85,8 @@ function hypr() {
         bat broot btop
         code direnv discord eza
         fastfetch fd firewalld fzf fcitx5 fcitx5-configtool fcitx5-gtk fcitx5-qt
+        fuse2
+        gimp
         lazygit less libreoffice-still libavif
         mpv man-db
         neovide neovim
@@ -94,6 +97,7 @@ function hypr() {
         zsh-autosuggestions zsh-completions zsh-syntax-highlighting
         # programming languages
         rustup opam typst shfmt stylua rust-analyzer tinymist
+        tree-sitter-cli
     )
     pacman -Syu --noconfirm ${packages[@]}
     systemctl enable NetworkManager dhcpcd greetd
