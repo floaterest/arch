@@ -94,6 +94,7 @@ function hypr() {
         ripgrep rsync
         sccache starship sshfs
         unrar unzip
+        uv
         zsh-autosuggestions zsh-completions zsh-syntax-highlighting
         # programming languages
         rustup opam typst shfmt stylua rust-analyzer tinymist
@@ -104,7 +105,7 @@ function hypr() {
 
     # TODO install AUR packages here
 
-    echo "Please su u, then restore backup from the external harddrive"
+    echo "Run su u, then restore backup from the external harddrive"
 }
 
 function postinstall() {
