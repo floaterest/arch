@@ -13,7 +13,7 @@ env:
       mozc-ut
     betterbird-bin
     opentabletdriver
-    paru-bin
+    paru
     qt6ct-kde
     typstyle-bin
     zoom
