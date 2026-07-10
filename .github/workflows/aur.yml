@@ -19,7 +19,7 @@ env:
     zen-browser-bin 
     zoom
     zotero-bin
-  # qt6ct-kde
+    qt6ct-kde
 
 jobs:
   build:
