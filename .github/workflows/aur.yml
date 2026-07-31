@@ -12,7 +12,6 @@ env:
     fcitx5-mozc-ut
       mozc-ut
     betterbird-bin
-    opentabletdriver
     wechat-bin
     yay-bin
     zed-preview-bin
@@ -20,6 +19,7 @@ env:
     zoom
     zotero-bin
     qt6ct-kde
+  # opentabletdriver
 
 jobs:
   build:
