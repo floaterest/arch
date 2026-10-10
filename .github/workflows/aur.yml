@@ -9,8 +9,6 @@ on:
 env:
   PACKAGES: |
     darkly
-    fcitx5-mozc-ut
-      mozc-ut
     betterbird-bin
     wechat-bin
     yay-bin
@@ -19,6 +17,8 @@ env:
     zoom
     zotero-bin
     qt6ct-kde
+  # fcitx5-mozc-ut
+  #   mozc-ut
   # opentabletdriver
 
 jobs:
