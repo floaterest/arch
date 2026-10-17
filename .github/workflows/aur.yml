@@ -17,9 +17,9 @@ env:
     zoom
     zotero-bin
     qt6ct-kde
-  # fcitx5-mozc-ut
-  #   mozc-ut
-  # opentabletdriver
+    fcitx5-mozc-ut
+      mozc-ut
+    opentabletdriver
 
 jobs:
   build:
