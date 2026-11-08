@@ -20,6 +20,10 @@ env:
     fcitx5-mozc-ut
       mozc-ut
     opentabletdriver
+    claude-desktop
+    codex-desktop-linux
+    paru
+    freedownloadmanager
 
 jobs:
   build:
