@@ -21,7 +21,6 @@ env:
       mozc-ut
     opentabletdriver
     claude-desktop
-    codex-desktop-linux
     paru
     freedownloadmanager
 
