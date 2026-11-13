@@ -6,52 +6,20 @@ on:
   #     - main
   workflow_dispatch:
     inputs:
-      darkly:
-        type: boolean
-        default: true
-      betterbird-bin:
-        type: boolean
-        default: true
-      wechat-bin:
-        type: boolean
-        default: true
-      yay-bin:
-        type: boolean
-        default: true
-      zed-preview-bin:
-        type: boolean
-        default: true
-      zen-browser-bin:
-        type: boolean
-        default: true
-      zoom:
-        type: boolean
-        default: true
-      zotero-bin:
-        type: boolean
-        default: true
-      qt6ct-kde:
-        type: boolean
-        default: true
-      fcitx5-mozc-ut:
-        type: boolean
-        default: true
-      mozc-ut:
-        type: boolean
-        default: true
-        description: mozc-ut (required by fcitx5-mozc-ut)
-      opentabletdriver:
-        type: boolean
-        default: true
-      claude-desktop:
-        type: boolean
-        default: true
-      paru:
-        type: boolean
-        default: true
-      freedownloadmanager:
-        type: boolean
-        default: true
+      darkly: { type: boolean, default: true }
+      betterbird-bin: { type: boolean, default: true }
+      wechat-bin: { type: boolean, default: true }
+      yay-bin: { type: boolean, default: true }
+      zed-preview-bin: { type: boolean, default: true }
+      zen-browser-bin: { type: boolean, default: true }
+      zoom: { type: boolean, default: true }
+      zotero-bin: { type: boolean, default: true }
+      qt6ct-kde: { type: boolean, default: true }
+      fcitx5-mozc-ut: { type: boolean, default: true, description: mozc-ut fcitx5-mozc-ut }
+      opentabletdriver: { type: boolean, default: true }
+      claude-desktop: { type: boolean, default: true }
+      paru: { type: boolean, default: true }
+      freedownloadmanager: { type: boolean, default: true }
 
 jobs:
   build:
@@ -73,7 +41,7 @@ jobs:
         env:
           INPUTS: ${{ toJSON(inputs) }}
         run: |
-          PACKAGES=$(yq '.on.workflow_dispatch.inputs | keys | .[] | select(env(INPUTS)[.] != false)' .github/workflows/aur.yml)
+          PACKAGES=$(yq '.on.workflow_dispatch.inputs | to_entries | .[] | select(env(INPUTS)[.key] != false) | .value.description // .key' .github/workflows/aur.yml)
           sudo -u u bash -c "./makepkg.sh `tac <<< $PACKAGES | xargs`"
 
       - run: |
